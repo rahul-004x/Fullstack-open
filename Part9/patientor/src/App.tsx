@@ -24,7 +24,8 @@ import {
   Dashboard as DashboardIcon,
   People as PeopleIcon,
   AssignmentInd as AssignmentIndIcon,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
+  Add as AddIcon
 } from '@mui/icons-material';
 
 import { apiBaseUrl } from "./constants";
@@ -60,8 +61,21 @@ const theme = createTheme({
       styleOverrides: {
         paper: {
           width: 240,
-          backgroundColor: '#1e1e1e',
+          backgroundColor: '#1a2035',
           color: 'white',
+          backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))',
+          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          margin: '4px 8px',
+          borderRadius: '8px',
+          '&.Mui-selected': {
+            backgroundColor: 'rgba(255, 255, 255, 0.12) !important',
+          },
         },
       },
     },
@@ -103,91 +117,56 @@ const Navigation = () => {
     <Box sx={{ color: 'white', overflow: 'hidden' }}>
       <Box 
         sx={{ 
-          p: 2, 
+          p: 2.5, 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: sidebarCollapsed ? 'center' : 'space-between',
-          borderBottom: '1px solid rgba(255,255,255,0.12)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
           position: 'relative',
           cursor: !isMobile ? 'pointer' : 'default',
+          backdropFilter: 'blur(6px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.03)',
           '&:hover': !isMobile ? {
-            backgroundColor: 'rgba(255,255,255,0.04)'
+            backgroundColor: 'rgba(255,255,255,0.06)'
           } : {},
-          '&::after': !isMobile ? {
-            content: '""',
-            position: 'absolute',
-            right: sidebarCollapsed ? '50%' : 12,
-            top: '50%',
-            transform: sidebarCollapsed ? 'translate(50%, -50%)' : 'translateY(-50%)',
-            width: 20,
-            height: 20,
-            borderRadius: '50%',
-            backgroundColor: 'rgba(255,255,255,0.08)',
-            opacity: 0,
-            transition: 'opacity 0.2s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          } : {},
-          '&:hover::after': !isMobile ? {
-            opacity: 0.8,
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              width: 10,
-              height: 10,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              backgroundImage: sidebarCollapsed 
-                ? 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'white\'%3E%3Cpath d=\'M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z\'/%3E%3C/svg%3E")' 
-                : 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'white\'%3E%3Cpath d=\'M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z\'/%3E%3C/svg%3E")',
-              opacity: 0.8
-            }
-          } : {}
         }}
         onClick={!isMobile ? toggleSidebar : undefined}
-      >
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center',
-          position: 'relative'
-        }}>
-          <LocalHospitalIcon sx={{ mr: sidebarCollapsed ? 0 : 1 }} />
-          {!sidebarCollapsed && (
-            <Typography variant="h6" noWrap sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.5
-            }}>
-              Patientor
-              {!isMobile && (
-                <Box 
-                  component="span" 
-                  sx={{ 
-                    opacity: 0,
-                    transition: 'opacity 0.2s',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    ml: 0.5,
-                    fontSize: '0.7em',
-                    color: 'rgba(255,255,255,0.7)',
-                    '&::before': {
-                      content: '"(Click to collapse)"',
-                    },
-                    '.MuiBox-root:hover &': {
-                      opacity: 0.7
-                    }
-                  }}
-                />
-              )}
-            </Typography>
-          )}
+      >          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            position: 'relative'
+          }}>
+            <LocalHospitalIcon 
+              sx={{ 
+                mr: sidebarCollapsed ? 0 : 1.5,
+                fontSize: '1.75rem',
+                color: 'primary.main',
+                transition: 'all 0.2s ease'
+              }} 
+            />
+            {!sidebarCollapsed && (
+              <Typography 
+                variant="h6" 
+                noWrap 
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  fontWeight: 600,
+                  letterSpacing: '0.5px',
+                  background: 'linear-gradient(45deg, #fff, rgba(255,255,255,0.8))',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                Patientor
+              </Typography>
+            )}
         </Box>
-        {!isMobile && (
+        {!isMobile && !sidebarCollapsed && (
           <Tooltip 
-            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"} 
-            placement={sidebarCollapsed ? "right" : "right"}
+            title="Collapse sidebar"
+            placement="right"
             arrow
           >
             <IconButton 
@@ -198,33 +177,69 @@ const Navigation = () => {
               size="small"
               sx={{ 
                 color: 'white',
-                backgroundColor: 'rgba(255,255,255,0.08)',
-                borderRadius: 1,
-                width: 30,
-                height: 30,
-                padding: '4px',
-                border: '1px solid rgba(255,255,255,0.12)',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                backgroundColor: 'rgba(255,255,255,0.04)',
+                borderRadius: 1.5,
+                width: 28,
+                height: 28,
+                padding: '6px',
+                border: '1px solid',
+                borderColor: 'rgba(255,255,255,0.08)',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
                 '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  borderColor: 'rgba(255,255,255,0.15)',
                 },
-                '&:focus': {
-                  outline: '2px solid rgba(255,255,255,0.3)',
+                '&:active': {
+                  transform: 'scale(0.95)',
                 },
-                transition: 'all 0.2s ease',
-                transform: sidebarCollapsed ? 'rotate(0deg)' : 'rotate(180deg)'
+                transition: 'all 0.2s ease'
               }}
-              aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label="Collapse sidebar"
             >
               <ChevronRightIcon fontSize="small" sx={{ 
                 transition: 'all 0.2s ease',
+                transform: 'rotate(180deg)'
               }} />
             </IconButton>
           </Tooltip>
         )}
+        {!isMobile && sidebarCollapsed && (
+          <Tooltip 
+            title="Expand sidebar"
+            placement="right"
+            arrow
+          >
+            <IconButton 
+              onClick={toggleSidebar}
+              size="small"
+              sx={{ 
+                position: 'absolute',
+                right: -14,
+                top: 12,
+                color: '#1a2035',
+                backgroundColor: 'white',
+                borderRadius: '50%',
+                width: 28,
+                height: 28,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                '&:hover': {
+                  backgroundColor: '#f5f5f5',
+                },
+                '&:active': {
+                  transform: 'scale(0.95)',
+                },
+                transition: 'all 0.2s ease',
+                zIndex: 1
+              }}
+              aria-label="Expand sidebar"
+            >
+              <AddIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
-      {/* Removed divider since we added border-bottom to header */}
-      <List>
+      {/* Menu items */}
+      <List sx={{ mt: 1, px: 1 }}>
         {menuItems.map((item) => (
           <ListItem 
             button 
@@ -233,32 +248,62 @@ const Navigation = () => {
             to={item.path}
             selected={location.pathname === item.path}
             sx={{
-              px: sidebarCollapsed ? 2 : 3,
+              px: sidebarCollapsed ? 2 : 2.5,
               py: 1.5,
+              mb: 0.5,
               justifyContent: sidebarCollapsed ? 'center' : 'flex-start',
               '&.Mui-selected': {
                 backgroundColor: 'rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(4px)',
                 '&:hover': {
                   backgroundColor: 'rgba(255,255,255,0.12)',
                 },
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  left: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: 3,
+                  height: '60%',
+                  backgroundColor: 'primary.main',
+                  borderRadius: '0 4px 4px 0',
+                },
               },
               '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.08)',
+                backgroundColor: 'rgba(255,255,255,0.06)',
               },
+              transition: 'all 0.2s ease',
             }}
           >
             <Tooltip title={sidebarCollapsed ? item.text : ''} placement="right" arrow>
               <ListItemIcon 
                 sx={{ 
-                  color: 'white',
+                  color: location.pathname === item.path ? 'primary.main' : 'rgba(255,255,255,0.7)',
                   minWidth: sidebarCollapsed ? 'auto' : 40, 
-                  mr: sidebarCollapsed ? 0 : 2
+                  mr: sidebarCollapsed ? 0 : 2,
+                  transition: 'color 0.2s ease',
+                  '& svg': {
+                    fontSize: '1.3rem',
+                  },
                 }}
               >
                 {item.icon}
               </ListItemIcon>
             </Tooltip>
-            {!sidebarCollapsed && <ListItemText primary={item.text} />}
+            {!sidebarCollapsed && (
+              <ListItemText 
+                primary={item.text} 
+                sx={{ 
+                  '& .MuiListItemText-primary': {
+                    fontSize: '0.9rem',
+                    fontWeight: location.pathname === item.path ? 600 : 400,
+                    color: location.pathname === item.path ? 'white' : 'rgba(255,255,255,0.7)',
+                    transition: 'all 0.2s ease',
+                  }
+                }}
+              />
+            )}
           </ListItem>
         ))}
       </List>
@@ -291,7 +336,14 @@ const Navigation = () => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
+              sx={{ 
+                mr: 2,
+                backgroundColor: 'rgba(33, 150, 243, 0.08)',
+                borderRadius: 1,
+                '&:hover': {
+                  backgroundColor: 'rgba(33, 150, 243, 0.15)',
+                }
+              }}
             >
               <MenuIcon />
             </IconButton>
