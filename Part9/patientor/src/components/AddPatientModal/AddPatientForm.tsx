@@ -57,7 +57,7 @@ const AddPatientForm = ({ onCancel, onSubmit }: Props) => {
           onChange={({ target }) => setName(target.value)}
         />
         <TextField
-          label="Social security number"
+          label="Aadhar number"
           fullWidth
           value={ssn}
           onChange={({ target }) => setSsn(target.value)}

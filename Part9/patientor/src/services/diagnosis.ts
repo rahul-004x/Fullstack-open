@@ -4,7 +4,7 @@ import { apiBaseUrl } from '../constants';
 
 const getAll = async () => {
   const { data } = await axios.get<Diagnosis[]>(
-    `${apiBaseUrl}/diagnosed`  // Also fixed the endpoint
+    `${apiBaseUrl}/diagnosed`  
   );
   return data;
 };

@@ -21,14 +21,12 @@ import {
 import { Theme } from "@mui/material/styles";
 import { HealthCheckRating, Diagnosis, EntryWithoutId } from "../../types";
 
-// Styles for multi-select
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      // width: 250,
     },
   },
 };
