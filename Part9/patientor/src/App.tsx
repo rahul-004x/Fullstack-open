@@ -24,8 +24,7 @@ import {
   Dashboard as DashboardIcon,
   People as PeopleIcon,
   AssignmentInd as AssignmentIndIcon,
-  ChevronRight as ChevronRightIcon,
-  Add as AddIcon
+  ChevronRight as ChevronRightIcon
 } from '@mui/icons-material';
 
 import { apiBaseUrl } from "./constants";
@@ -204,38 +203,21 @@ const Navigation = () => {
           </Tooltip>
         )}
         {!isMobile && sidebarCollapsed && (
-          <Tooltip 
-            title="Expand sidebar"
-            placement="right"
-            arrow
-          >
-            <IconButton 
-              onClick={toggleSidebar}
-              size="small"
-              sx={{ 
-                position: 'absolute',
-                right: -14,
-                top: 12,
-                color: '#1a2035',
-                backgroundColor: 'white',
-                borderRadius: '50%',
-                width: 28,
-                height: 28,
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                '&:hover': {
-                  backgroundColor: '#f5f5f5',
-                },
-                '&:active': {
-                  transform: 'scale(0.95)',
-                },
-                transition: 'all 0.2s ease',
-                zIndex: 1
-              }}
-              aria-label="Expand sidebar"
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          <Box 
+            onClick={toggleSidebar}
+            sx={{ 
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              width: '100%',
+              height: '100%',
+              cursor: 'pointer',
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255,0.06)',
+              },
+            }}
+            aria-label="Expand sidebar"
+          />
         )}
       </Box>
       {/* Menu items */}
